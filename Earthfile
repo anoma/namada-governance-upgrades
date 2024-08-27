@@ -18,7 +18,7 @@ source:
   COPY --keep-ts Cargo.toml Cargo.lock ./
   COPY --keep-ts --chmod 755 docker/run-wasmopt.sh ./run-wasmopt.sh
   COPY --keep-ts --chmod 755 docker/download-wasmopt.sh ./download-wasmopt.sh
-  COPY --keep-ts --dir block_party shielding_party staking_party shielding_reward_party ./
+  COPY --keep-ts --dir shielding_party staking_party shielding_rewards_party nam_party ./
 
 # lint runs cargo clippy on the source code
 lint:

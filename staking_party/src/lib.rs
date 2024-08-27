@@ -1,39 +1,29 @@
+use dec::Dec;
 use namada_tx_prelude::*;
 
-pub type ChannelId = &'static str;
-pub type BaseToken = &'static str;
+use std::str::FromStr;
 
-pub type MintTokenLimit = token::Amount;
-pub type ThroughtputTokenLimit = token::Amount;
-
-const IBC_TOKENS: [(ChannelId, BaseToken, MintTokenLimit, ThroughtputTokenLimit); 2] = [
-    (
-        "channel-0",
-        "tnam1qrdm8ymq2svrrafzuqahm547xm4kfuw3aue93uzs",
-        MintTokenLimit::from_u64(1000),
-        ThroughtputTokenLimit::from_u64(10000),
-    ),
-    (
-        "channel-1",
-        "tnam1qqx4luqsngxdmpf5nk8shkn7wwlmz6g7dckp8kgm",
-        MintTokenLimit::from_u64(2000),
-        ThroughtputTokenLimit::from_u64(13000),
-    ),
-];
+use namada_proof_of_stake::storage::{read_pos_params, write_pos_params};
 
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
-    // Enable IBC deposit/withdraws limits
-    for (channel_id, base_token, mint_limit, throughput_limit) in IBC_TOKENS {
-        let ibc_denom = format!("transfer/{channel_id}/{base_token}");
-        let token_address = ibc::ibc_token(&ibc_denom);
+    // PoS inflation
+    let mut pos_params = read_pos_params(ctx)?.owned;
+    pos_params.max_inflation_rate = Dec::from_str("0.1").unwrap();
+    pos_params.target_staked_ratio = Dec::from_str("0.666667").unwrap();
+    pos_params.rewards_gain_p = Dec::from_str("2.5").unwrap();
+    pos_params.rewards_gain_d = Dec::from_str("2.5").unwrap();
+    write_pos_params(ctx, &pos_params)?;
 
-        let mint_limit_token_key = ibc::mint_limit_key(&token_address);
-        ctx.write(&mint_limit_token_key, mint_limit)?;
+    // PGF inflation
+    let pgf_inflation_key = governance::pgf::storage::keys::get_pgf_inflation_rate_key();
+    let pgf_inflation_rate = Dec::from_str("0.025").unwrap();
+    ctx.write(&pgf_inflation_key, pgf_inflation_rate)?;
 
-        let throughput_limit_token_key = ibc::throughput_limit_key(&token_address);
-        ctx.write(&throughput_limit_token_key, throughput_limit)?;
-    }
+    // PGF stewards inflation
+    let steward_inflation_key = governance::pgf::storage::keys::get_steward_inflation_rate_key();
+    let steward_inflation_rate = Dec::from_str("0.001").unwrap();
+    ctx.write(&steward_inflation_key, steward_inflation_rate)?;
 
     Ok(())
 }

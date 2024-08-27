@@ -8,25 +8,25 @@ Namada mainnet launch is divided into [5 phases](https://namada.net/mainnet-laun
 
 Staking rewards are enabled for delegators and validators staking NAM. Public Goods Funding is enabled to support public goods in the Namada ecosystem and beyond.
 
-The reference code can be found in [block_party folder](./block_party/).
+The reference code can be found in [staking_party folder](./staking_party/).
 
 ## Staking party -> Shielding party (Phase 2 -> 3)
 
 Transparent and shielded transfers of governance-enabled IBC assets are enabled. Users can begin shielding assets in the unified shielded set. NAM transfers remain locked until phase 5 (NAM party).
 
-The reference code can be found in [staking_party folder](./staking_party/).
+The reference code can be found in [shielding_party folder](./shielding_party/).
 
 ## Shielding party -> Shielding Reward party (Phase 3 -> 4)
 
 Shielding rewards for governance-enabled IBC assets are enabled. Users begin collecting rewards for shielding assets, which protects their data and helps strengthen Namada’s unified shielded set.
 
-The reference code can be found in [shielding_party folder](./shielding_party/).
+The reference code can be found in [shielding_rewards_party folder](./shielding_rewards_party/).
 
 ## Shielding Reward party -> NAM Party (Phase 4 -> 5)
 
 When the Namada community is confident that the network is stable, NAM transfers are enabled. All key protocol functionality is now live. From here on, new features and support for new assets can continue to be added by the community via on-chain governance.
 
-The reference code can be found in [shielding_reward_party folder](./shielding_reward_party/).
+The reference code can be found in [nam_party folder](./nam_party/).
 
 # How to build 
 To generate the wasm artifacts that can be attached to the governance proposal, run:
