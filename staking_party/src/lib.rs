@@ -8,7 +8,7 @@ use namada_proof_of_stake::storage::{read_pos_params, write_pos_params};
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
     // PoS inflation
-    let mut pos_params = read_pos_params(ctx)?.owned;
+    let mut pos_params = read_pos_params::<Ctx, governance::Store<Ctx>>(ctx)?.owned;
     pos_params.max_inflation_rate = Dec::from_str("0.1").unwrap();
     pos_params.target_staked_ratio = Dec::from_str("0.666667").unwrap();
     pos_params.rewards_gain_p = Dec::from_str("2.5").unwrap();
