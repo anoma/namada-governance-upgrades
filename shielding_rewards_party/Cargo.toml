@@ -1,6 +1,6 @@
 [package]
-name = "block_party"
-description = "WASM transaction to transition from phase 1 to phase 2 of Namada mainnet."
+name = "shielding_rewards_party"
+description = "WASM transaction to transition from phase 3 to phase 4 of Namada mainnet."
 authors.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -10,7 +10,6 @@ version.workspace = true
 
 [dependencies]
 namada_tx_prelude.workspace = true
-namada_proof_of_stake.workspace = true
 rlsf.workspace = true
 getrandom.workspace = true
 

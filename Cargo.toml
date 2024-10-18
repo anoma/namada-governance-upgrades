@@ -2,17 +2,17 @@
 resolver = "2"
 
 members = [
-    "block_party",
     "staking_party",
     "shielding_party",
-    "shielding_reward_party",
+    "shielding_rewards_party",
+    "nam_party",
 ]
 
 default-members = [
-    "block_party",
     "staking_party",
     "shielding_party",
-    "shielding_reward_party",
+    "shielding_rewards_party",
+    "nam_party",
 ]
 
 [workspace.package]
@@ -22,9 +22,9 @@ license = "GPL-3.0"
 version = "0.1.0"
 
 [workspace.dependencies]
-namada_tx_prelude = { git = "https://github.com/anoma/namada", tag = "v0.43.0" }
-namada_proof_of_stake = { git = "https://github.com/anoma/namada", tag = "v0.43.0" }
-namada_ibc = { git = "https://github.com/anoma/namada", tag = "v0.43.0" }
+namada_tx_prelude = { git = "https://github.com/anoma/namada", tag = "v0.44.1" }
+namada_proof_of_stake = { git = "https://github.com/anoma/namada", tag = "v0.44.1" }
+namada_ibc = { git = "https://github.com/anoma/namada", tag = "v0.44.1" }
 rlsf = "0.2.1"
 getrandom = { version = "0.2", features = ["custom"] }
 lazy_static = "1.4.0"

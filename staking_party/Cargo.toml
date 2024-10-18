@@ -1,6 +1,6 @@
 [package]
 name = "staking_party"
-description = "WASM transaction to transition from phase 2 to phase 3 of Namada mainnet."
+description = "WASM transaction to transition from phase 1 to phase 2 of Namada mainnet."
 authors.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -10,6 +10,7 @@ version.workspace = true
 
 [dependencies]
 namada_tx_prelude.workspace = true
+namada_proof_of_stake.workspace = true
 rlsf.workspace = true
 getrandom.workspace = true
 

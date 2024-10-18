@@ -8,8 +8,8 @@
     "details": "Phasellus quis sem finibus, luctus neque in, vestibulum lectus.",
     "requires": "-1",
     "author": "tnam1qxfj3sf6a0meahdu9t6znp05g8zx4dkjtgyn9gfu",
-    "voting_start_epoch": 9,
-    "voting_end_epoch": 18,
-    "activation_epoch": 25,
+    "voting_start_epoch": 6,
+    "voting_end_epoch": 12,
+    "activation_epoch": 18,
     "wasm_path": "artifacts/staking_party.wasm"
 }
