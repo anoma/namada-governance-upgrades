@@ -12,7 +12,27 @@ pub type TokenTargetLockedAmount = u64;
 pub type KpGain = &'static str;
 pub type KdGain = &'static str;
 
-const IBC_TOKENS: [(
+pub type MintTokenLimit = token::Amount;
+pub type ThroughtputTokenLimit = token::Amount;
+
+// Allow both OSMO and ATOM into Namada
+const IBC_TOKENS_1: [(ChannelId, BaseToken, MintTokenLimit, ThroughtputTokenLimit); 2] = [
+    (
+        "channel-2",
+        "uosmo",
+        MintTokenLimit::from_u64(10000000000),
+        ThroughtputTokenLimit::from_u64(10000000000),
+    ),
+    (
+        "channel-1",
+        "uatom",
+        MintTokenLimit::from_u64(10000000000),
+        ThroughtputTokenLimit::from_u64(10000000000),
+    ),
+];
+
+// Only incentivize OSMO but add both to token map
+const IBC_TOKENS_2: [(
     Denomination,
     ChannelId,
     BaseToken,
@@ -20,15 +40,18 @@ const IBC_TOKENS: [(
     TokenTargetLockedAmount,
     KpGain,
     KdGain,
-); 1] = [(
-    6,
-    "channel-0",
-    "uosmo",
-    "0.01",
-    1_000_000,
-    "120000",
-    "120000",
-)];
+); 2] = [
+    (0, "channel-1", "uatom", "0", 0, "0", "0"),
+    (
+        0,
+        "channel-2",
+        "uosmo",
+        "0.01",
+        1_000_000,
+        "120000",
+        "120000",
+    ),
+];
 
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
@@ -38,42 +61,21 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
         .read::<masp::TokenMap>(&token_map_key)?
         .unwrap_or_default();
 
-    // let nam_address = ctx.get_native_token()?;
+    // Enable IBC deposit/withdraws limits
+    for (channel_id, base_token, mint_limit, throughput_limit) in IBC_TOKENS_1 {
+        let ibc_denom = format!("transfer/{channel_id}/{base_token}");
+        let token_address = ibc::ibc_token(&ibc_denom);
 
-    // Add native token to token map
-    // token_map.insert("nam".to_string(), nam_address.clone());
+        let mint_limit_token_key = ibc::mint_limit_key(&token_address);
+        ctx.write(&mint_limit_token_key, mint_limit)?;
 
-    // let shielded_native_token_last_inflation_key =
-    //     token::storage_key::masp_last_inflation_key(&nam_address);
-    // let shielded_native_token_last_locked_amount_key =
-    //     token::storage_key::masp_last_locked_amount_key(&nam_address);
-    // let shielded_native_token_max_rewards_key =
-    //     token::storage_key::masp_max_reward_rate_key(&nam_address);
-    // let shielded_native_token_target_locked_amount_key =
-    //     token::storage_key::masp_locked_amount_target_key(&nam_address);
-    // let shielded_native_token_kp_gain_key = token::storage_key::masp_kp_gain_key(&nam_address);
-    // let shielded_native_token_kd_gain_key = token::storage_key::masp_kd_gain_key(&nam_address);
-
-    // Setup native token shielded set rewards to 0
-    // ctx.write(
-    //     &shielded_native_token_last_inflation_key,
-    //     token::Amount::zero(),
-    // )?;
-    // ctx.write(
-    //     &shielded_native_token_last_locked_amount_key,
-    //     token::Amount::zero(),
-    // )?;
-    // ctx.write(&shielded_native_token_max_rewards_key, Dec::zero())?;
-    // ctx.write(
-    //     &shielded_native_token_target_locked_amount_key,
-    //     token::Amount::from_uint(0, 6).unwrap(),
-    // )?;
-    // ctx.write(&shielded_native_token_kp_gain_key, Dec::zero())?;
-    // ctx.write(&shielded_native_token_kd_gain_key, Dec::zero())?;
+        let throughput_limit_token_key = ibc::throughput_limit_key(&token_address);
+        ctx.write(&throughput_limit_token_key, throughput_limit)?;
+    }
 
     // Enable shielded set rewards for ibc tokens
     for (denomination, channel_id, base_token, max_reward, target_locked_amount, kp, kd) in
-        IBC_TOKENS
+        IBC_TOKENS_2
     {
         let ibc_denom = format!("transfer/{channel_id}/{base_token}");
         let token_address = ibc::ibc_token(&ibc_denom);
@@ -97,7 +99,9 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
             &token_address,
             &Address::Internal(address::InternalAddress::Masp),
         );
-        let current_ibc_amount = ctx.read::<token::Amount>(&ibc_balance_key)?.unwrap();
+        let current_ibc_amount = ctx
+            .read::<token::Amount>(&ibc_balance_key)?
+            .unwrap_or_default();
         ctx.write(&shielded_token_last_locked_amount_key, current_ibc_amount)?;
 
         // Initialize the remaining MASP inflation keys
