@@ -2,7 +2,7 @@
 
 set -e
 
-RELEASE=version_117
+RELEASE=version_119
 REPO_OWNER=WebAssembly
 REPO=binaryen
 EXECUTABLE=wasm-opt
@@ -42,7 +42,7 @@ response=$(curl -s $GH_TAGS)
 eval $(echo "$response" | grep -C3 "name.:.\+$TAR" | grep -w id | tr : = | tr -cd '[[:alnum:]]=')
 [ "$id" ] || { echo "Error: Failed to get asset id, response: $response" | awk 'length($0)<100' >&2; exit 1; }
 
-wget --quiet --content-disposition --no-cookie -q --header "Accept: application/octet-stream" "$GH_REPO/releases/assets/$id" --show-progress
+wget --no-verbose --content-disposition --no-cookie -q --header "Accept: application/octet-stream" "$GH_REPO/releases/assets/$id" --show-progress
 
 # unpack
 tar -xf $TAR

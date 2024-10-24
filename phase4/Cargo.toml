@@ -1,6 +1,6 @@
 [package]
-name = "nam_party"
-description = "WASM transaction to transition from phase 4 to phase 5 of Namada mainnet."
+name = "phase4"
+description = "WASM transaction to transition from phase 3 to phase 4 of Namada mainnet."
 authors.workspace = true
 edition.workspace = true
 license.workspace = true

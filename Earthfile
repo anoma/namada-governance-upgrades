@@ -3,7 +3,7 @@ VERSION --global-cache 0.8
 IMPORT github.com/earthly/lib/rust AS rust
 
 install:
-  FROM rust:1.78.0-bookworm
+  FROM rust:1.80.0-bookworm
   RUN apt-get update && apt-get install -y protobuf-compiler build-essential clang-tools-14
   
   RUN rustup component add clippy rustfmt
@@ -18,7 +18,7 @@ source:
   COPY --keep-ts Cargo.toml Cargo.lock ./
   COPY --keep-ts --chmod 755 docker/run-wasmopt.sh ./run-wasmopt.sh
   COPY --keep-ts --chmod 755 docker/download-wasmopt.sh ./download-wasmopt.sh
-  COPY --keep-ts --dir shielding_party staking_party shielding_rewards_party nam_party ./
+  COPY --keep-ts --dir phase2 phase3 phase4 phase5 ./
 
 # lint runs cargo clippy on the source code
 lint:
@@ -33,7 +33,7 @@ check:
 # build builds with the Cargo release profile
 build:
   FROM +lint
-  DO rust+CARGO --args="build --release --target wasm32-unknown-unknown" --output="wasm32-unknown-unknown\/release\/[a-zA-Z_]+\.wasm"
+  DO rust+CARGO --args="build --release --target wasm32-unknown-unknown" --output="wasm32-unknown-unknown\/release\/[a-zA-Z_1-9]+\.wasm"
   RUN ./download-wasmopt.sh
   RUN ./run-wasmopt.sh
   SAVE ARTIFACT ./target/wasm32-unknown-unknown/release AS LOCAL artifacts

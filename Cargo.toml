@@ -2,17 +2,17 @@
 resolver = "2"
 
 members = [
-    "staking_party",
-    "shielding_party",
-    "shielding_rewards_party",
-    "nam_party",
+    "phase2",
+    "phase3",
+    "phase4",
+    "phase5",
 ]
 
 default-members = [
-    "staking_party",
-    "shielding_party",
-    "shielding_rewards_party",
-    "nam_party",
+    "phase2",
+    "phase3",
+    "phase4",
+    "phase5",
 ]
 
 [workspace.package]

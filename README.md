@@ -4,29 +4,29 @@ Namada mainnet launch is divided into [5 phases](https://namada.net/mainnet-laun
 
 > 🔧 NOTE: The current parameter values are temporary and still to be determined. 🔧
 
-## Block party -> Staking party (Phase 1 -> 2)
+## Phase 1 -> 2 (Block party -> Staking party)
 
 Staking rewards are enabled for delegators and validators staking NAM. Public Goods Funding is enabled to support public goods in the Namada ecosystem and beyond.
 
-The reference code can be found in [staking_party folder](./staking_party/).
+The reference code can be found in [phase2 folder](./phase2/).
 
-## Staking party -> Shielding party (Phase 2 -> 3)
+## Phase 2 -> 3 (Staking party -> Shielding party)
 
 Transparent and shielded transfers of governance-enabled IBC assets are enabled. Users can begin shielding assets in the unified shielded set. NAM transfers remain locked until phase 5 (NAM party).
 
-The reference code can be found in [shielding_party folder](./shielding_party/).
+The reference code can be found in [phase3 folder](./phase3/).
 
-## Shielding party -> Shielding Reward party (Phase 3 -> 4)
+## Phase 3 -> 4 (Shielding party -> Shielding Rewards party)
 
 Shielding rewards for governance-enabled IBC assets are enabled. Users begin collecting rewards for shielding assets, which protects their data and helps strengthen Namada’s unified shielded set.
 
-The reference code can be found in [shielding_rewards_party folder](./shielding_rewards_party/).
+The reference code can be found in [phase4 folder](./phase4/).
 
-## Shielding Reward party -> NAM Party (Phase 4 -> 5)
+## Phase 4 -> 5 (Shielding Reward party -> NAM Party)
 
 When the Namada community is confident that the network is stable, NAM transfers are enabled. All key protocol functionality is now live. From here on, new features and support for new assets can continue to be added by the community via on-chain governance.
 
-The reference code can be found in [nam_party folder](./nam_party/).
+The reference code can be found in [phase5 folder](./phase5/).
 
 # How to build 
 To generate the wasm artifacts that can be attached to the governance proposal, run:
@@ -45,5 +45,5 @@ python3 builder/build_proposal.py -d $PARAMETERS_PATH -o $OUTPUT_PATH
 ```
 The `$PARAMETERS_PATH` is a json file that contains some parameters and values needed to properly construct a proposal. For example, to build the phase1 to phase2 proposal:
 ```
-python3 builder/build_proposal.py -d builder/parameters/block-party.json -o proposal.json
+python3 builder/build_proposal.py -d builder/parameters/phase2.json -o proposal.json
 ```
