@@ -20,11 +20,11 @@ const IBC_TOKENS: [(
     ThroughtputTokenLimit,
     MinimumGasPrice,
 ); 1] = [(
-    "channel-0",
+    "channel-1",
     "uosmo",
-    MintTokenLimit::from_u64(10000000000),
-    ThroughtputTokenLimit::from_u64(10000000000),
-    Some(Gas::from_u64(1)),
+    MintTokenLimit::from_u64(10000000000),        // 10,000 OSMO
+    ThroughtputTokenLimit::from_u64(10000000000), // 10,000 OSMO
+    Some(Gas::from_u64(1)),                       // 1 uosmo per unit of gas
 )];
 
 #[transaction]

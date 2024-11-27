@@ -6,6 +6,8 @@ members = [
     "phase3",
     "phase4",
     "phase5",
+    "phase4_retry",
+    "nam_ibc_rate_limits",
 ]
 
 default-members = [
@@ -13,6 +15,8 @@ default-members = [
     "phase3",
     "phase4",
     "phase5",
+    "phase4_retry",
+    "nam_ibc_rate_limits",
 ]
 
 [workspace.package]

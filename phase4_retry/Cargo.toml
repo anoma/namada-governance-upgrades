@@ -1,0 +1,15 @@
+[package]
+name = "phase4_retry"
+description = "WASM transaction to increase the locked token amount for OSMO rewards."
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+namada_tx_prelude.workspace = true
+rlsf.workspace = true
+getrandom.workspace = true
+
+[lib]
+crate-type = ["cdylib"]

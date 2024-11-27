@@ -22,12 +22,12 @@ const IBC_TOKENS: [(
     KdGain,
 ); 1] = [(
     0,
-    "channel-0",
+    "channel-1",
     "uosmo",
-    "0.01",
-    1_000_000,
-    "120000",
-    "120000",
+    "0.01",   // Max annual inflation of 1% of NAM supply
+    1_000,    // Target shielded amount of 1,000 OSMO
+    "120000", // Kp gain of 120000 --> this is a high value that will reach max inflation quickly
+    "120000", // Kd gain of 120000 --> this is a high value that will reach max inflation quickly
 )];
 
 #[transaction]
