@@ -3175,7 +3175,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "phase5"
+name = "phase5-1"
+version = "0.1.0"
+dependencies = [
+ "getrandom",
+ "namada_tx_prelude",
+ "rlsf",
+]
+
+[[package]]
+name = "phase5-2"
 version = "0.1.0"
 dependencies = [
  "getrandom 0.2.16",
