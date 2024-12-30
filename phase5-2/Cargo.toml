@@ -1,0 +1,15 @@
+[package]
+name = "phase5-2"
+description = "WASM transaction to raise IBC rate limits for NAM as part of Phase 5."
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+namada_tx_prelude.workspace = true
+rlsf.workspace = true
+getrandom.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
