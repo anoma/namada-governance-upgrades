@@ -19,13 +19,50 @@ const IBC_TOKENS: [(
     MintTokenLimit,
     ThroughtputTokenLimit,
     MinimumGasPrice,
-); 1] = [(
-    "channel-0",
-    "uosmo",
-    MintTokenLimit::from_u64(10000000000),
-    ThroughtputTokenLimit::from_u64(10000000000),
-    Some(Gas::from_u64(1)),
-)];
+); 6] = [
+    (
+        "channel-7",
+        "uosmo",
+        MintTokenLimit::from_u64(100000000),       // 100 OSMO
+        ThroughtputTokenLimit::from_u64(20000000), // 20 OSMO
+        Some(Gas::from_u64(10)),                   // 10 uosmo / gas unit
+    ),
+    (
+        "channel-9",
+        "uatom",
+        MintTokenLimit::from_u64(100000000),       // 100 ATOM
+        ThroughtputTokenLimit::from_u64(20000000), // 20 ATOM
+        Some(Gas::from_u64(1)),                    // 1 uatom / gas unit
+    ),
+    (
+        "channel-10",
+        "utia",
+        MintTokenLimit::from_u64(100000000),       // 100 TIA
+        ThroughtputTokenLimit::from_u64(20000000), // 20 TIA
+        Some(Gas::from_u64(1)),                    // 1 utia / gas unit
+    ),
+    (
+        "channel-8",
+        "stuosmo",
+        MintTokenLimit::from_u64(100000000),       // 100 STOSMO
+        ThroughtputTokenLimit::from_u64(20000000), // 20 STOSMO
+        Some(Gas::from_u64(10)),                   // 10 stuosmo / gas unit
+    ),
+    (
+        "channel-8",
+        "stuatom",
+        MintTokenLimit::from_u64(100000000),       // 100 STATOM
+        ThroughtputTokenLimit::from_u64(20000000), // 20 STATOM
+        Some(Gas::from_u64(1)),                    // 1 stuatom / gas unit
+    ),
+    (
+        "channel-8",
+        "stutia",
+        MintTokenLimit::from_u64(100000000),       // 100 STTIA
+        ThroughtputTokenLimit::from_u64(20000000), // 20 STTIA
+        Some(Gas::from_u64(1)),                    // 1 stutia / gas unit
+    ),
+];
 
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {

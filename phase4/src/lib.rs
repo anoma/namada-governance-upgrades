@@ -20,24 +20,65 @@ const IBC_TOKENS: [(
     TokenTargetLockedAmount,
     KpGain,
     KdGain,
-); 1] = [(
-    0,
-    "channel-0",
-    "uosmo",
-    "0.01",
-    1_000_000,
-    "120000",
-    "120000",
-)];
+); 6] = [
+    (
+        0,
+        "channel-7",
+        "uosmo",
+        "0.02",     // Max 2% annual inflation
+        60_000_000, // Target 60 OSMO
+        "120000",
+        "120000",
+    ),
+    (
+        0,
+        "channel-9",
+        "uatom",
+        "0.02",     // Max 2% annual inflation
+        60_000_000, // Target 60 ATOM
+        "120000",
+        "120000",
+    ),
+    (
+        0,
+        "channel-10",
+        "utia",
+        "0.02",     // Max 2% annual inflation
+        60_000_000, // Target 60 TIA
+        "120000",
+        "120000",
+    ),
+    (
+        0,
+        "channel-8",
+        "stuosmo",
+        "0.02",     // Max 2% annual inflation
+        60_000_000, // Target 60 stOSMO
+        "120000",
+        "120000",
+    ),
+    (
+        0,
+        "channel-8",
+        "stuatom",
+        "0.02",     // Max 2% annual inflation
+        60_000_000, // Target 60 stATOM
+        "120000",
+        "120000",
+    ),
+    (
+        0,
+        "channel-8",
+        "stutia",
+        "0.02",     // Max 2% annual inflation
+        60_000_000, // Target 60 stTIA
+        "120000",
+        "120000",
+    ),
+];
 
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
-    // Read the current MASP token map
-    let token_map_key = token::storage_key::masp_token_map_key();
-    let mut token_map = ctx
-        .read::<masp::TokenMap>(&token_map_key)?
-        .unwrap_or_default();
-
     // Enable shielded set rewards for ibc tokens
     for (denomination, channel_id, base_token, max_reward, target_locked_amount, kp, kd) in
         IBC_TOKENS
@@ -56,9 +97,6 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
         let shielded_token_kp_gain_key = token::storage_key::masp_kp_gain_key(&token_address);
         let shielded_token_kd_gain_key = token::storage_key::masp_kd_gain_key(&token_address);
 
-        // Add the ibc token to the masp token map
-        token_map.insert(ibc_denom, token_address.clone());
-
         // Read the current balance of the IBC token in MASP and set that as initial locked amount
         let ibc_balance_key = balance_key(
             &token_address,
@@ -69,7 +107,6 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
 
         // Initialize the remaining MASP inflation keys
         ctx.write(&shielded_token_last_inflation_key, token::Amount::zero())?;
-
         ctx.write(
             &shielded_token_max_rewards_key,
             Dec::from_str(max_reward).unwrap(),
@@ -81,9 +118,6 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
         ctx.write(&shielded_token_kp_gain_key, Dec::from_str(kp).unwrap())?;
         ctx.write(&shielded_token_kd_gain_key, Dec::from_str(kd).unwrap())?;
     }
-
-    // Write the token map back to storage
-    ctx.write(&token_map_key, token_map)?;
 
     Ok(())
 }
