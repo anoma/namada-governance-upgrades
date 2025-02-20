@@ -2,11 +2,13 @@
 resolver = "2"
 
 members = [ "increase_target_staked_ratio",
+    "nam_rate_limits",
     "phase2",
     "phase3",
     "phase4",
     "phase5",
-    "increase_target_staked_ratio"
+    "increase_target_staked_ratio",
+    "default_ibc_rate_limits"
 ]
 
 default-members = [
@@ -14,7 +16,9 @@ default-members = [
     "phase3",
     "phase4",
     "phase5",
-    "increase_target_staked_ratio"
+    "increase_target_staked_ratio",
+    "nam_rate_limits",
+    "default_ibc_rate_limits",
 ]
 
 [workspace.package]

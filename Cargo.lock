@@ -660,6 +660,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f400d0750c0c069e8493f2256cb4da6f604b6d2eeb69a0ca8863acde352f8400"
 
 [[package]]
+name = "default_ibc_rate_limits"
+version = "0.1.0"
+dependencies = [
+ "getrandom",
+ "namada_ibc",
+ "namada_tx_prelude",
+ "rlsf",
+]
+
+[[package]]
 name = "der"
 version = "0.7.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2343,6 +2353,15 @@ dependencies = [
  "ics23",
  "itertools 0.14.0",
  "sha2 0.10.8",
+]
+
+[[package]]
+name = "nam_rate_limits"
+version = "0.1.0"
+dependencies = [
+ "getrandom",
+ "namada_tx_prelude",
+ "rlsf",
 ]
 
 [[package]]
