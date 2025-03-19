@@ -45,7 +45,7 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
 
         // Erase the TOK rewards that have been distributed so far
         let mut asset_types = BTreeMap::new();
-        let mut precision_toks = BTreeMap::new();
+        let mut tok_precisions = BTreeMap::new();
         let mut reward_deltas = BTreeMap::new();
         // TOK[ep, digit]
         let mut asset_type = |epoch, digit| {
@@ -61,7 +61,7 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
         };
         // PRECISION TOK[ep, digit]
         let mut precision_tok = |epoch, digit| {
-            precision_toks
+            tok_precisions
                 .entry((epoch, digit))
                 .or_insert_with(|| {
                     AllowedConversion::from(I128Sum::from_pair(
@@ -73,13 +73,12 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
         };
         // -PRECISION TOK[ep, digit] + PRECISION TOK[ep+1, digit]
         let mut reward_delta = |epoch, digit| {
-            reward_deltas
-                .entry((epoch, digit))
-                .or_insert_with(|| {
-                    -precision_tok(epoch, digit)
-                        + precision_tok(epoch.next().unwrap(), digit)
-                })
-                .clone()
+            reward_deltas.insert(
+                (epoch, digit),
+                -precision_tok(epoch, digit)
+                    + precision_tok(epoch.next().unwrap(), digit)
+            );
+            reward_deltas[&(epoch, digit)].clone()
         };
         // Write the new TOK conversions to memory
         for digit in MaspDigitPos::iter() {
