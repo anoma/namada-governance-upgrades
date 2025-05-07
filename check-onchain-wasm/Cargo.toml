@@ -14,8 +14,8 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.4.2", features = ["derive", "env"] }
-tendermint-rpc = { version = "0.37.0", features = ["http-client"]}
-namada_sdk = { git = "https://github.com/anoma/namada", tag = "v0.41.0" }
-namada_governance = { git = "https://github.com/anoma/namada", tag = "v0.41.0" }
+tendermint-rpc = { version = "0.40.3", features = ["http-client"]}
+namada_sdk = { git = "https://github.com/anoma/namada", tag = "v0.149.1" }
+namada_governance = { git = "https://github.com/anoma/namada", tag = "v0.149.1" }
 tokio = {version = "1.8.2", default-features = false}
 sha2 = "0.10.8"
