@@ -1,0 +1,17 @@
+[package]
+name = "update-tx-claim-rewards-2"
+description = "WASM transaction to update tx_claim_rewards WASM from https://github.com/anoma/namada/pull/4666."
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+namada_tx_prelude.workspace = true
+rlsf.workspace = true
+getrandom.workspace = true
+
+[lib]
+crate-type = ["cdylib"]

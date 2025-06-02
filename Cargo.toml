@@ -8,6 +8,7 @@ members = [ "increase_target_staked_ratio",
     "phase5",
     "increase_target_staked_ratio",
     "update-tx-claim-rewards",
+    "update-tx-claim-rewards-2",
 ]
 
 default-members = [
@@ -17,6 +18,7 @@ default-members = [
     "phase5",
     "increase_target_staked_ratio",
     "update-tx-claim-rewards",
+    "update-tx-claim-rewards-2",
 ]
 
 [workspace.package]
