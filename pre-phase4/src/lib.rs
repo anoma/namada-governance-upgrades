@@ -28,36 +28,56 @@ pub enum TokenAddress {
 const NATIVE_TOKEN_BECH32M: AddressBech32m =
     "tnam1q9gr66cvu4hrzm0sd5kmlnjje82gs3xlfg3v6nu7";
 // The tokens whose rewarrds will be reset.
-const TOKENS: [(TokenAddress, Denomination, Precision); 6] = [
+const TOKENS: [(TokenAddress, Denomination, Precision); 10] = [
     (
         TokenAddress::Ibc("channel-1", "uosmo"),
         Denomination(0u8),
-        1000u128,
+        50_000_000,
     ),
     (
         TokenAddress::Ibc("channel-2", "uatom"),
         Denomination(0u8),
-        1000u128,
+        10_000_000,
     ),
     (
         TokenAddress::Ibc("channel-3", "utia"),
         Denomination(0u8),
-        1000u128,
+        10_000_000,
     ),
     (
         TokenAddress::Ibc("channel-0", "stuosmo"),
         Denomination(0u8),
-        1000u128,
+        50_000_000,
     ),
     (
         TokenAddress::Ibc("channel-0", "stuatom"),
         Denomination(0u8),
-        1000u128,
+        10_000_000,
     ),
     (
         TokenAddress::Ibc("channel-0", "stutia"),
         Denomination(0u8),
-        1000u128,
+        10_000_000,
+    ),
+    (
+        TokenAddress::Ibc("channel-4", "upenumbra"),
+        Denomination(0u8),
+        50_000_000,
+    ),
+    (
+        TokenAddress::Ibc("channel-5", "uusdc"),
+        Denomination(0u8),
+        50_000_000,
+    ),
+    (
+        TokenAddress::Ibc("channel-6", "unym"),
+        Denomination(0u8),
+        250_000_000,
+    ),
+    (
+        TokenAddress::Ibc("channel-7", "untrn"),
+        Denomination(0u8),
+        100_000_000,
     ),
 ];
 
