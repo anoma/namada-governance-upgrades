@@ -1,11 +1,12 @@
 [workspace]
 resolver = "2"
 
-members = [ "increase_target_staked_ratio",
+members = [
     "phase2",
     "phase3",
     "phase4",
-    "phase5",
+    "phase5-1",
+    "phase5-2",
     "increase_target_staked_ratio",
     "update-tx-claim-rewards",
 ]
@@ -14,7 +15,8 @@ default-members = [
     "phase2",
     "phase3",
     "phase4",
-    "phase5",
+    "phase5-1",
+    "phase5-2",
     "increase_target_staked_ratio",
     "update-tx-claim-rewards",
 ]
