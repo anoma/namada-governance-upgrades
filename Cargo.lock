@@ -4310,7 +4310,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "update-tx-claim-rewards"
+name = "update-tx-ibc"
 version = "0.1.0"
 dependencies = [
  "getrandom 0.2.16",
