@@ -45,9 +45,7 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
     Ok(())
 }
 
-const TX_NAME: &str = "tx_claim_rewards.wasm";
-const OLD_TX_HASH: &str = "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c";
-const NEW_TX_HASH: &str = "b74104949ac0c35ee922fdc3f3db454627742e2483d79550c12fcf31755c6d01";
-const NEW_TX_CODE: &[u8] = include_bytes!(
-    "tx_claim_rewards.b74104949ac0c35ee922fdc3f3db454627742e2483d79550c12fcf31755c6d01.wasm"
-);
+const TX_NAME: &str = "tx_name.wasm";
+const OLD_TX_HASH: &str = "hex_bytes_of_old_tx_hash";
+const NEW_TX_HASH: &str = "hex_bytes_of_new_tx_hash";
+const NEW_TX_CODE: &[u8] = include_bytes!("tx_name.hex_bytes_of_new_tx_hash.wasm"); // This file must be within the src/ directory in here
