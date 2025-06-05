@@ -1,5 +1,5 @@
 [package]
-name = "update-tx-claim-rewards"
+name = "update-onchain-wasm"
 description = "WASM transaction to update tx_claim_rewards WASM from https://github.com/anoma/namada/pull/4283."
 authors.workspace = true
 edition.workspace = true
