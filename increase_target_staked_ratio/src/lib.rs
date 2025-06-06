@@ -1,15 +1,22 @@
-use dec::Dec;
-use namada_tx_prelude::*;
-
-use std::str::FromStr;
-
-use namada_proof_of_stake::storage::{read_pos_params, write_pos_params};
+use namada_tx_prelude::{
+    gov_storage::keys::get_min_proposal_voting_period_key,
+    parameters::ProposalBytes,
+    parameters_storage::{get_max_block_gas_key, get_max_proposal_bytes_key},
+    *,
+};
 
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
-    let mut pos_params = read_pos_params::<Ctx, governance::Store<Ctx>>(ctx)?.owned;
-    pos_params.target_staked_ratio = Dec::from_str("0.55").unwrap();
-    write_pos_params(ctx, &pos_params)?;
+    let max_proposal_bytes_key = get_max_proposal_bytes_key();
+    let min_voting_period_key = get_min_proposal_voting_period_key();
+    let max_block_gas_key = get_max_block_gas_key();
+
+    ctx.write(
+        &max_proposal_bytes_key,
+        ProposalBytes::new(2_000_000).unwrap(),
+    )?;
+    ctx.write(&min_voting_period_key, 2_u64)?;
+    ctx.write(&max_block_gas_key, 10_000_000_u64)?;
 
     Ok(())
 }
