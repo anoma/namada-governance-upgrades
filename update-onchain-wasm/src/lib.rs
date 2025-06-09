@@ -35,19 +35,21 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
     let code_key = storage::Key::wasm_code(&new_code_hash);
     let code_len_key = storage::Key::wasm_code_len(&new_code_hash);
     let hash_key = storage::Key::wasm_hash(TX_NAME);
-    let code_name_key = storage::Key::wasm_code_name(TX_NAME.to_owned());
+    let code_hash_key = storage::Key::wasm_code_hash(TX_NAME.to_owned());
+    let code_name_key = storage::Key::wasm_code_name(&new_code_hash);
+
+
 
     ctx.write(&code_key, NEW_TX_CODE)?;
     ctx.write(&code_len_key, new_code_len)?;
     ctx.write(&hash_key, new_code_hash)?;
-    ctx.write(&code_name_key, new_code_hash)?;
+    ctx.write(&code_hash_key, new_code_hash)?;
+    ctx.write(&code_name_key, TX_NAME)?;
 
     Ok(())
 }
 
-const TX_NAME: &str = "tx_claim_rewards.wasm";
-const OLD_TX_HASH: &str = "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c";
-const NEW_TX_HASH: &str = "b74104949ac0c35ee922fdc3f3db454627742e2483d79550c12fcf31755c6d01";
-const NEW_TX_CODE: &[u8] = include_bytes!(
-    "tx_claim_rewards.b74104949ac0c35ee922fdc3f3db454627742e2483d79550c12fcf31755c6d01.wasm"
-);
+const TX_NAME: &str = "tx_name.wasm";
+const OLD_TX_HASH: &str = "hex_bytes_of_old_tx_hash";
+const NEW_TX_HASH: &str = "hex_bytes_of_new_tx_hash";
+const NEW_TX_CODE: &[u8] = include_bytes!("tx_name.hex_bytes_of_new_tx_hash.wasm"); // This file must be within the src/ directory in here
