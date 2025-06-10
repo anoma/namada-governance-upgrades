@@ -4,6 +4,7 @@ resolver = "2"
 members = [
     "phase2",
     "phase3",
+    "pre-phase4",
     "phase4",
     "phase5a",
     "phase5b",
@@ -14,6 +15,7 @@ members = [
 default-members = [
     "phase2",
     "phase3",
+    "pre-phase4",
     "phase4",
     "phase5a",
     "phase5b",

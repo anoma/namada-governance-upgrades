@@ -3254,6 +3254,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "pre-phase4"
+version = "0.1.0"
+dependencies = [
+ "getrandom 0.2.16",
+ "namada_tx_prelude",
+ "rlsf",
+]
+
+[[package]]
 name = "prettyplease"
 version = "0.2.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
