@@ -1,0 +1,16 @@
+[package]
+name = "update-gas-costs"
+description = "WASM transaction to write minimum gas costs for desired tokens."
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+namada_tx_prelude.workspace = true
+rlsf.workspace = true
+getrandom.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
