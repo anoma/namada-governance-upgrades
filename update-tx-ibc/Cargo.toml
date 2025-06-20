@@ -1,6 +1,6 @@
 [package]
-name = "update-tx-claim-rewards"
-description = "WASM transaction to update tx_claim_rewards WASM from https://github.com/anoma/namada/pull/4283."
+name = "update-tx-ibc"
+description = "WASM transaction to update tx_ibc WASM from https://github.com/anoma/namada/pull/4643."
 authors.workspace = true
 edition.workspace = true
 license.workspace = true
