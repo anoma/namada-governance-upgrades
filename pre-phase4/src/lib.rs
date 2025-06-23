@@ -1,11 +1,14 @@
-use std::str::FromStr;
-use namada_tx_prelude::*;
-use masp_primitives::transaction::components::I128Sum;
-use std::collections::BTreeMap;
-use masp::{Precision, encode_asset_type};
-use masp_primitives::convert::AllowedConversion;
 use masp::MaspEpoch;
-use token::storage_key::{masp_conversion_key, masp_scheduled_reward_precision_key, masp_scheduled_base_native_precision_key};
+use masp::{encode_asset_type, Precision};
+use masp_primitives::convert::AllowedConversion;
+use masp_primitives::transaction::components::I128Sum;
+use namada_tx_prelude::*;
+use std::collections::BTreeMap;
+use std::str::FromStr;
+use token::storage_key::{
+    masp_conversion_key, masp_scheduled_base_native_precision_key,
+    masp_scheduled_reward_precision_key,
+};
 use token::{Denomination, MaspDigitPos};
 
 pub type ChannelId = &'static str;
@@ -25,14 +28,13 @@ pub enum TokenAddress {
 }
 
 // The address of the native token. This is what rewards are denominated in.
-const NATIVE_TOKEN_BECH32M: AddressBech32m =
-    "tnam1q9gr66cvu4hrzm0sd5kmlnjje82gs3xlfg3v6nu7";
+const NATIVE_TOKEN_BECH32M: AddressBech32m = "tnam1q9gr66cvu4hrzm0sd5kmlnjje82gs3xlfg3v6nu7";
 // The tokens whose rewarrds will be reset.
-const TOKENS: [(TokenAddress, Denomination, Precision); 10] = [
+const TOKENS: [(TokenAddress, Denomination, Precision); 11] = [
     (
         TokenAddress::Ibc("channel-1", "uosmo"),
         Denomination(0u8),
-        50_000_000,
+        100_000_000,
     ),
     (
         TokenAddress::Ibc("channel-2", "uatom"),
@@ -42,12 +44,12 @@ const TOKENS: [(TokenAddress, Denomination, Precision); 10] = [
     (
         TokenAddress::Ibc("channel-3", "utia"),
         Denomination(0u8),
-        10_000_000,
+        20_000_000,
     ),
     (
         TokenAddress::Ibc("channel-0", "stuosmo"),
         Denomination(0u8),
-        50_000_000,
+        100_000_000,
     ),
     (
         TokenAddress::Ibc("channel-0", "stuatom"),
@@ -57,7 +59,7 @@ const TOKENS: [(TokenAddress, Denomination, Precision); 10] = [
     (
         TokenAddress::Ibc("channel-0", "stutia"),
         Denomination(0u8),
-        10_000_000,
+        20_000_000,
     ),
     (
         TokenAddress::Ibc("channel-4", "upenumbra"),
@@ -77,20 +79,25 @@ const TOKENS: [(TokenAddress, Denomination, Precision); 10] = [
     (
         TokenAddress::Ibc("channel-7", "untrn"),
         Denomination(0u8),
-        100_000_000,
+        125_000_000,
+    ),
+    (
+        TokenAddress::Address(NATIVE_TOKEN_BECH32M),
+        Denomination(6u8),
+        1_000_000_000,
     ),
 ];
 
 #[transaction]
 fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
     // The address of the native token. This is what rewards are denominated in.
-    let native_token = Address::from_str(NATIVE_TOKEN_BECH32M)
-        .expect("unable to construct native token address");
+    let native_token =
+        Address::from_str(NATIVE_TOKEN_BECH32M).expect("unable to construct native token address");
     // The MASP epoch in which this migration will be applied. This number
     // controls the number of epochs of conversions created.
-    let target_masp_epoch: MaspEpoch = MaspEpoch::try_from_epoch(Epoch(8000), 4)
-        .expect("failed to construct target masp epoch");
-    
+    let target_masp_epoch: MaspEpoch =
+        MaspEpoch::try_from_epoch(Epoch(824), 4).expect("failed to construct target masp epoch");
+
     // Reset the allowed conversions for the above tokens
     for (token_address, denomination, precision) in TOKENS {
         // Compute the Namada address
@@ -99,8 +106,9 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
                 let ibc_denom = format!("transfer/{channel_id}/{base_token}");
                 ibc::ibc_token(&ibc_denom).clone()
             }
-            TokenAddress::Address(addr) => Address::from_str(addr)
-                .expect("unable to construct token address"),
+            TokenAddress::Address(addr) => {
+                Address::from_str(addr).expect("unable to construct token address")
+            }
         };
 
         // Erase the TOK rewards that have been distributed so far
@@ -110,13 +118,8 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
         // TOK[ep, digit]
         let mut asset_type = |epoch, digit| {
             *asset_types.entry((epoch, digit)).or_insert_with(|| {
-                encode_asset_type(
-                    token_address.clone(),
-                    denomination,
-                    digit,
-                    Some(epoch),
-                )
-                .expect("unable to encode asset type")
+                encode_asset_type(token_address.clone(), denomination, digit, Some(epoch))
+                    .expect("unable to encode asset type")
             })
         };
         // PRECISION TOK[ep, digit]
@@ -136,9 +139,9 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
             reward_deltas
                 .entry((epoch, digit))
                 .or_insert_with(|| {
-                    -precision_tok(epoch, digit)
-                        + precision_tok(epoch.next().unwrap(), digit)
-                }).clone()
+                    -precision_tok(epoch, digit) + precision_tok(epoch.next().unwrap(), digit)
+                })
+                .clone()
         };
         // The key holding the shielded reward precision of current token
         let shielded_token_reward_precision_key =
@@ -164,16 +167,15 @@ fn apply_tx(ctx: &mut Ctx, _tx_data: BatchedTx) -> TxResult {
             .rev()
             {
                 // TOK[ep, digit]
-                let asset_type = encode_asset_type(
-                    token_address.clone(),
-                    denomination,
-                    digit,
-                    Some(epoch),
-                )
-                .expect("unable to encode asset type");
+                let asset_type =
+                    encode_asset_type(token_address.clone(), denomination, digit, Some(epoch))
+                        .expect("unable to encode asset type");
                 reward += reward_delta(epoch, digit);
                 // Write the conversion update to memory
-                ctx.write(&masp_conversion_key(&target_masp_epoch, &asset_type), reward.clone())?;
+                ctx.write(
+                    &masp_conversion_key(&target_masp_epoch, &asset_type),
+                    reward.clone(),
+                )?;
             }
         }
     }
